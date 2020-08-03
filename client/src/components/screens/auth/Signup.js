@@ -1,12 +1,19 @@
-import React, { useState } from 'react'
-import { Link } from "react-router-dom"
+import React, { useState,useEffect } from 'react'
+import { Link, useHistory, useLocation } from "react-router-dom"
+import { useDispatch, useSelector } from 'react-redux'
+
+import { signUp } from "../../../redux/actions/index"
 
 export default function Signup() {
+    const dispatch = useDispatch()
+    const response = useSelector(state => state.signupReducer)
+    let history = useHistory();
+    let location = useLocation();
 
-    const [name, setName] = useState({ text: "", invalid: false })
-    const [email, setEmail] = useState({ text: "", invalid: false })
-    const [password, setPassword] = useState({ text: "", invalid: false })
-    const [repassword, setReassword] = useState({ text: "", invalid: false })
+    const [name, setName] = useState({ text: "Long Pham", invalid: false })
+    const [email, setEmail] = useState({ text: "admin@gmail.com", invalid: false })
+    const [password, setPassword] = useState({ text: "Long@2010", invalid: false })
+    const [repassword, setReassword] = useState({ text: "Long@2010", invalid: false })
     const [warning, setWarning] = useState({ invalid: false, content: "" })
 
     const refreshForm = () => {
@@ -16,9 +23,15 @@ export default function Signup() {
         setReassword({ text: "", invalid: false })
         setWarning({ content: "", invalid: false })
     }
+    useEffect(() => {
+        if (response.response) {
+            let { from } = location.state || { from: { pathname: "/signin" } };
+            history.replace(from)
+        }
+    }, [response]);
 
     const validateEmail = (email) => {
-        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+        if (email.match(/\S+@\S+\.\S+/)) {
             return (true)
         }
         return (false)
@@ -40,18 +53,22 @@ export default function Signup() {
         else {
             let emailValid = validateEmail(email.text)
             let passwordValid = validatePass(password.text)
-            let repasswordValid = validatePass(repassword.text)
             //pass has at least 6 to 20 charactes and special symbol
-            console.log(passwordValid);
             if (!emailValid) {
                 setEmail({ text: "", invalid: true })
             }
             else if (!passwordValid) {
                 setPassword({ text: "", invalid: true })
             }
-            else if (password.text != repassword.text) {
+            else if (password.text !== repassword.text) {
                 setWarning({ invalid: true, content: "your two password weren't match" })
             } else {
+                let user = {
+                    name: name.text,
+                    email: email.text,
+                    password: password.text
+                }
+                dispatch(signUp(user))
                 refreshForm()
             }
         }
@@ -92,7 +109,7 @@ export default function Signup() {
                     {repassword.invalid ? <span className="red-text text-accent-4"><h6>Input Password and Submit 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter</h6></span> : ""}
                     <button
                         className="btn waves-effect  red" type="submit">
-                        Login
+                        Sign Up
                     </button>
                     {warning.invalid ? <span className="red-text text-accent-4"><h6>your passwords weren't match</h6></span> : ""}
                 </form>

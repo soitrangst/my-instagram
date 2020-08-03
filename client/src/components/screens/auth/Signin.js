@@ -1,20 +1,39 @@
-import React, { useState } from 'react'
-import { Link } from "react-router-dom"
+import React, { useState,useEffect } from 'react'
+import { Link, useHistory, useLocation } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { checkAuth } from "../../../redux/actions/index"
+
 
 export default function Signin() {
 
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+    const response = useSelector(state => state.signinReducer)
+    
+    const dispatch = useDispatch()
+    let history = useHistory();
+    let location = useLocation();
 
-    const _submit = (e) =>{
+
+    const [email, setEmail] = useState("admin@gmail.com")
+    const [password, setPassword] = useState("Long@2010")
+
+    const _submit = (e) => {
         e.preventDefault()
-        if(!email & !password){
-            console.log("good");
+        if (email && password) {
+            let user = {
+                email,
+                password
+            }
+            dispatch(checkAuth(user))
         }
         setEmail("")
         setPassword("")
     }
-
+    useEffect(() => {
+        if (response.response) {
+            let { from } = location.state || { from: { pathname: "/" } };
+            history.replace(from)
+        }
+    }, [response]);
     return (
         <div className="mycard">
             <div className="card auth-card input-field ">
@@ -35,7 +54,7 @@ export default function Signin() {
                     />
 
                     <button className="btn waves-effect  red"
-                     type="submit" name="action">
+                        type="submit" name="action">
                         Login
                     </button>
 
