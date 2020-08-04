@@ -1,9 +1,10 @@
 import React from 'react';
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom"
 
 const Navbar = () => {
-    return (
-        <nav>
+  return (
+    <div className="navbar-fixed">
+      <nav>
         <div className="nav-wrapper white">
           <Link to="" className="brand-logo left">instagram</Link>
           <ul id="nav-mobile" className="right ">
@@ -14,7 +15,9 @@ const Navbar = () => {
           </ul>
         </div>
       </nav>
-    );
+    </div>
+
+  );
 }
 
 export default Navbar;

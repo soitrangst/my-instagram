@@ -1,18 +1,19 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useHistory, useLocation } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { checkAuth } from "../../../redux/actions/index"
-
+import M from "materialize-css"
 
 export default function Signin() {
 
     const response = useSelector(state => state.signinReducer)
-    
+    const announcement = response.response
+
     const dispatch = useDispatch()
     let history = useHistory();
     let location = useLocation();
 
-
+    console.log("call");
     const [email, setEmail] = useState("admin@gmail.com")
     const [password, setPassword] = useState("Long@2010")
 
@@ -24,16 +25,51 @@ export default function Signin() {
                 password
             }
             dispatch(checkAuth(user))
+        } else {
+            M.toast({
+                html: "Please fill all the fields",
+                classes: "red",
+            })
         }
         setEmail("")
         setPassword("")
     }
+
     useEffect(() => {
-        if (response.response) {
-            let { from } = location.state || { from: { pathname: "/" } };
-            history.replace(from)
+        let auth = localStorage.getItem('auth')
+        if (auth) {
+            if (announcement) {
+                //     M.toast({
+                //         html: announcement,
+                //         classes:"light-green darken-3",
+                //         completeCallback:MoveHome,
+                //         inDuration:100,
+                //         outDuration:10
+                //     })
+                MoveHome()
+                M.toast({
+                    html: announcement,
+                    classes: "light-green darken-3",
+                    completeCallback: MoveHome,
+                    inDuration: 100,
+                    outDuration: 10
+                })
+            }
+            function MoveHome() {
+                let { from } = location.state || { from: { pathname: "/" } };
+                history.replace(from)
+
+            }
+
+
+        } else if (!response.loading) {
+            console.log(response);
+            if (response.error) {
+                M.toast({ html: announcement, classes: "red" })
+            }
         }
     }, [response]);
+
     return (
         <div className="mycard">
             <div className="card auth-card input-field ">

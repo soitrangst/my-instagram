@@ -1,12 +1,19 @@
 import { SIGNUP } from "../constants"
 
-export default function (state = [], action) {
+const initalSignup = {
+    response: "",
+    loading: true,
+    error:false
+}
+
+export default function (state = initalSignup, action) {
     const response = action.response;
+    const err = action.error;
     switch (action.type) {
         case SIGNUP.SIGNUP_LOAD_SUCCESS:
-            return { ...state, response };
+            return { ...state,loading: false, response };
         case SIGNUP.SIGNUP_LOAD_FAIL:
-            return { ...state, response }
+            return { loading: false,error:true, response:err }
         default:
             return state;
     }

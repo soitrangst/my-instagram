@@ -1,12 +1,13 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useHistory, useLocation } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux'
-
+import M from "materialize-css"
 import { signUp } from "../../../redux/actions/index"
 
 export default function Signup() {
     const dispatch = useDispatch()
     const response = useSelector(state => state.signupReducer)
+    const annoucement = response.response
     let history = useHistory();
     let location = useLocation();
 
@@ -24,9 +25,22 @@ export default function Signup() {
         setWarning({ content: "", invalid: false })
     }
     useEffect(() => {
-        if (response.response) {
-            let { from } = location.state || { from: { pathname: "/signin" } };
-            history.replace(from)
+        if (!response.loading) {
+            if (response.error) {
+                M.toast({ html: annoucement, classes: "red" })
+            } else {
+                M.toast({
+                    html:annoucement,
+                    classes:"light-green darken-3",
+                    completeCallback:MoveSignin,
+                    inDuration:100,
+                    outDuration:10
+                })
+                function MoveSignin () {
+                    let { from } = location.state || { from: { pathname: "/signin" } };
+                    history.replace(from)
+                }
+            }
         }
     }, [response]);
 
@@ -47,7 +61,10 @@ export default function Signup() {
     const _post = (e) => {
         e.preventDefault()
         if (!name.text & !email.text & !password.text & !repassword.text) {
-            alert('Please fill all the fields')
+            M.toast({
+                html: "Please fill all the fields",
+                classes:"red",
+            })
             refreshForm()
         }
         else {

@@ -1,4 +1,4 @@
-import { SIGNIN,SIGNUP } from "../constants";
+import { SIGNIN,SIGNUP,CREATEPOST } from "../constants";
 
 const checkAuth = (user) => ({
     type: SIGNIN.SIGNIN_LOAD,
@@ -10,5 +10,10 @@ const signUp = (user) => ({
     user
 })
 
+const createPost = (post) =>({
+    type:CREATEPOST.CREATEPOST_LOAD,
+    post
+})
 
-export { checkAuth,signUp }
+
+export { checkAuth,signUp,createPost }

@@ -48,6 +48,12 @@ a {
     margin: 26px auto;
 }
 
+#toast-container {
+    top: 30px !important;
+    right: 20px !important;
+    left: auto !important;
+}
+
 @media (max-width: 735px) {
     .profile-title {
         margin-left: 16px;

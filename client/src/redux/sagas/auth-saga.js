@@ -6,7 +6,6 @@ import { Signin,Signup } from "../api/index"
 function* handleLoginLoad(payload) {
     try {
         const response = yield call(Signin, payload)
-        console.log(response);
         yield (
             put({ type: SIGNIN.SIGNIN_LOAD_SUCCESS, response })
         )
