@@ -16,8 +16,10 @@ const Signin = async (resquest) => {
             let response = data.error
             throw response
         } else {
+            console.log(data.user);
             localStorage.setItem('auth', true)
             localStorage.setItem('accessToken', data.token)
+            localStorage.setItem("user",JSON.stringify(data.user))
             return data.message
         }
     } catch (error) {
@@ -74,8 +76,29 @@ const createPost = async (resquest) => {
 
 }
 
+const social = async () => {
+    const requestOption = {
+        method: 'GET'
+    }
+    try {
+        const response = await fetch(apiURL.posts, requestOption)
+        const data = await response.json()
+        if (response.status >= 400) {
+            let response = data.error
+            throw response
+        } else {
+            let response = data.posts
+            return response
+        }
+    } catch (error) {
+        throw error
+    }
+
+}
+
 export {
     Signin,
     Signup,
-    createPost
+    createPost,
+    social
 }

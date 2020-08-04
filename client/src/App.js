@@ -1,8 +1,8 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import "./App.css";
-import { BrowserRouter, Switch, Route } from "react-router-dom"
-
-import {Provider} from "react-redux";
+import { BrowserRouter, Switch, Route,useHistory } from "react-router-dom"
+import {useStore} from "react-redux"
+import { Provider } from "react-redux";
 import configure from "./redux/store"
 
 import Navbar from "./components/navbar/Navbar";
@@ -14,22 +14,39 @@ import CreatePost from "./components/screens/Post/CreatePost"
 
 const store = configure()
 
+const Routing = () => {
+  const state = useStore(state=>state.signinReducer)
+  const history = useHistory()
+  useEffect(()=>{
+    const auth = localStorage.getItem('auth')
+    if(auth){
+      history.push('/')
+    }else{
+      history.push('signin')
+    }
+  },[state.loading])
+
+  return (
+    <Switch>
+      <Route exact path="/" component={Home} />
+      <Route path="/profile" component={Profile} />
+      <Route path="/signin" component={Signin} />
+      <Route path="/signup" component={Signup} />
+      <Route path="/post" component={CreatePost} />
+      <Route path="**" />
+    </Switch>
+  )
+}
+
+
 function App() {
   return (
-    <Provider store={store}> 
-      
-    <BrowserRouter>
-      <Navbar />
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route path="/profile" component={Profile} />
-        <Route path="/signin" component={Signin} />
-        <Route path="/signup" component={Signup} />
-        <Route path="/post" component={CreatePost} />
-        <Route path="**" />
-        
-      </Switch>
-    </BrowserRouter>
+    <Provider store={store}>
+
+      <BrowserRouter>
+        <Navbar />
+        <Routing />
+      </BrowserRouter>
 
     </Provider>
   );

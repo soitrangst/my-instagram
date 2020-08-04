@@ -13,7 +13,6 @@ export default function Signin() {
     let history = useHistory();
     let location = useLocation();
 
-    console.log("call");
     const [email, setEmail] = useState("admin@gmail.com")
     const [password, setPassword] = useState("Long@2010")
 

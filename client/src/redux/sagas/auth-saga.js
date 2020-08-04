@@ -18,7 +18,6 @@ function* handleLoginLoad(payload) {
 function* handleSignUpLoad(payload) {
     try {
         const response = yield call(Signup, payload)
-        console.log(response);
         yield (
             put({ type: SIGNUP.SIGNUP_LOAD_SUCCESS, response })
         )

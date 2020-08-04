@@ -1,32 +1,44 @@
-import React, { useState } from 'react'
-
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from "react-redux"
+import { social } from "../../redux/actions"
 export default function Home() {
+    const state = useSelector(state => state.social)
+    const dispatch = useDispatch()
+    const [images, setImages] = useState([{ _id: "", photo: "", postedBy: { name: "" }, title: "", body: "" }])
 
-    const [images, setImagaes] = useState([{ id: 1, like: true }, { id: 2, like: false }, { id: 3, like: false }, { id: 4, like: true }])
+    useEffect(() => {
+        dispatch(social())
+        if (!state.error) {
+            console.log(state.response);
+            setImages(state.response)
+        }
+
+    }, [state.loading])
 
     const _like = (e) => {
         let index = images.indexOf(e)
         images[index].like = !images[index].like
-        setImagaes([...images])
+        setImages([...images])
     }
 
     return (
         <div className="home">
-            {images.map((e, index) => {
+            {images.map((e) => {
                 return (
-                    <div key={index} className="card home-card">
-                        <h5>lyly</h5>
+                    <div key={e._id} className="card home-card">
+                        <h5>{e.postedBy.name}</h5>
                         <div className="card-image" onClick={() => _like(e)}>
                             <img
-                                src="https://images.unsplash.com/photo-1596357876935-cc6d6919ad10?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+                                src={e.photo}
                                 alt="user" />
                         </div>
                         <div className="card-content">
-                            {e.like ? <i className="small red-text text-accent-4 material-icons" onClick={() => _like(e)}>favorite</i> :
+                            {/* {e.like ? <i className="small red-text text-accent-4 material-icons" onClick={() => _like(e)}>favorite</i> :
                                 <i className="small material-icons" onClick={() => _like(e)}>favorite_border</i>
-                            }
-                            <h6>title</h6>
-                            <p>body</p>
+                            } */}
+                            <i className="small material-icons" onClick={() => _like(e)}>favorite_border</i>
+                            <h6>{e.title}</h6>
+                            <p>{e.body}</p>
                             <input type="text" placeholder="comment" />
                         </div>
                     </div>

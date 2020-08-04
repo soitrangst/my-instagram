@@ -44,12 +44,11 @@ router.get('/posts', (req, res) => {
     Post.find().limit(10).populate("postedBy", "name _id")
         .then(
             posts => {
-                res.status(200).json({ Posts: posts })
-
+                res.status(200).json({ posts})
             }
         )
         .catch(err => {
-            console.log(err);
+            res.status(404).json({error:"Error systerm, data can't be fetch"})
         })
 })
 
@@ -60,7 +59,7 @@ router.get('/mypost', requireLoging, (req, res) => {
             res.status(200).json({ myPosts: myPosts })
         })
         .catch(err => {
-            console.log(err);
+            res.status(404).json({error:"Error systerm, data can't be fetch"})
         })
 })
 

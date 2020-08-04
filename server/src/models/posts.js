@@ -18,6 +18,9 @@ const postSchema = new mongoose.Schema({
         type: ObjectId,
         ref: "User"
     },
+    like:{
+        type:Boolean,
+    },
     createAt:{
         type: Date,
         default: Date.now
