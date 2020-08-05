@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from "react-router-dom"
 import { getUserProfile } from '../../redux/api'
 import { userInterface } from "../../redux/constants/user-Interface"
 import M from 'materialize-css'
-
-const Profile = () => {
+const UserProfile = () => {
     const [myData, setMyData] = useState(userInterface);
-    const userid = !JSON.parse(localStorage.getItem('user')) ? null : JSON.parse(localStorage.getItem('user'))._id
+    const { userid } = useParams()
 
     const getData = async () => {
         try {
@@ -21,7 +21,7 @@ const Profile = () => {
     }, [userid])
 
     return (
-        !userid ? <div></div> :
+        !myData.user._id ? <div></div> :
             <div style={{ maxWidth: "80%", margin: "0px auto" }}>
                 <div className="profile-title" style={{
                     display: "flex",
@@ -78,4 +78,4 @@ const Profile = () => {
     );
 }
 
-export default Profile;
+export default UserProfile;

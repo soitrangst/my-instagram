@@ -20,6 +20,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(require('./src/routes/auth'))
 app.use(require('./src/routes/post'))
+app.use(require('./src/routes/user'))
 
 
 mongoose.connection.on('connected',()=>{

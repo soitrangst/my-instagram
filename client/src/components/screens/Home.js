@@ -1,24 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { getSocial } from "../../redux/actions"
-import { like, commentPut } from "../../redux/api"
+import { like, commentPut,deletePost } from "../../redux/api"
 import M from "materialize-css"
+import { Link } from 'react-router-dom'
+import {userInterface} from "../../redux/constants/user-Interface"
 
 export default function Home() {
-    const [images, setImages] = useState([
-        {
-            _id: "",
-            photo: "",
-            like: [],
-            comment: [{
-                _id: '', text: "",
-                postedBy: { name: "", _id: '' }
-            }],
-            postedBy: { name: "" },
-            title: "",
-            body: ""
-        }
-    ])
+    const [images, setImages] = useState(userInterface.post)
     const [text, setText] = useState('')
     const { social } = useSelector(state => state)
     const dispatch = useDispatch()
@@ -62,7 +51,6 @@ export default function Home() {
             if (text) {
                 const data = await commentPut(id, text)
                 let index = images.findIndex(e => e._id === id)
-                console.log(data);
                 images[index].comment=[...data.comment]
                 setImages([...images])
             }
@@ -72,16 +60,31 @@ export default function Home() {
         setText('')
     }
 
+    const _delete = async (id) =>{
+        try {
+           const response = await deletePost(id)
+           M.toast({ html: response, classes: 'light-green darken-3' })
+           const newData = images.filter(e => e._id !== id)
+           setImages([...newData])
+        } catch (error) {
+            M.toast({ html: error, classes: 'red' })
+        }
+    }
+
     return (
         <div className="home">
             {images.map((e) => {
                 let url = e.photo.url
                 let id = e._id
+                let poster = e.postedBy._id
                 let like = e.like.length
                 let comments = e.comment
                 return (
                     <div key={id} className="card home-card">
-                        <h5>{e.postedBy.name}</h5>
+                        <div className="rowC">
+                            <h5><Link to={`profile/${e.postedBy._id}`}>{e.postedBy.name}</Link></h5>
+                            {poster === userID ? <i className="material-icons small" onClick={()=>_delete(id)}>delete</i> : ''}
+                        </div>
                         <div className="card-image" onClick={() => react(id)}>
                             <img
                                 src={url}

@@ -172,6 +172,54 @@ const commentPut = async (id,text) => {
         throw error
     }
 }
+
+const deletePost = async (id)=>{
+
+    const requestOption = {
+        method: 'DELETE',
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+    }
+    try {
+        const response = await fetch(apiURL.delete+id, requestOption)
+        const data = await response.json()
+        if (response.status >= 400) {
+            let response = data.error
+            throw response
+        } else {
+            let response = data.message
+            return response
+        }
+    } catch (error) {
+        throw error
+    }
+}
+
+const getUserProfile = async (id)=>{
+
+    const requestOption = {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+    }
+    try {
+        const response = await fetch(apiURL.userProfile+id, requestOption)
+        const data = await response.json()
+        if (response.status >= 400) {
+            let response = data.error
+            throw response
+        } else {
+            let response = data
+            return response
+        }
+    } catch (error) {
+        throw error
+    }
+}
 export {
     Signin,
     Signup,
@@ -179,5 +227,7 @@ export {
     social,
     myposts,
     like,
-    commentPut
+    commentPut,
+    deletePost,
+    getUserProfile
 }

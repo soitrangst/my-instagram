@@ -117,4 +117,19 @@ router.put('/comment',requireLoging,(req,res)=>{
     })
 })
 
+router.delete('/deletepost/:postId',requireLoging,(req,res)=>{
+    Post.findOne({_id:req.params.postId})
+    .populate("postedBy",'_id')
+    .exec((err,result)=>{
+        if(err || !result){
+            return res.status(422).json({error:err})
+        }
+        if(result.postedBy._id.toString() === req.user._id.toString()){
+            result.remove()
+            .then(response => res.status(200).json({message:"Delete successfully!!!"}))
+            .catch(error => res.status(422).json({error}))
+        }
+    })
+})
+
 module.exports = router

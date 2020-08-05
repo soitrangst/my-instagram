@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const { text } = require('body-parser')
 
 const { ObjectId } = mongoose.Schema.Types
 const postSchema = new mongoose.Schema({

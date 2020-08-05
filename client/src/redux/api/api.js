@@ -8,7 +8,9 @@ const api = {
     myposts:`http://${env}/mypost`,
     like: `http://${env}/like`,
     unlike:`http://${env}/unlike`,
-    comment:`http://${env}/comment`
+    comment:`http://${env}/comment`,
+    delete: `http://${env}/deletepost/`,
+    userProfile:`http://${env}/user/`
 }
 
 export default api;
