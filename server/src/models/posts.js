@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const { text } = require('body-parser')
 
 const { ObjectId } = mongoose.Schema.Types
 const postSchema = new mongoose.Schema({
@@ -11,17 +12,27 @@ const postSchema = new mongoose.Schema({
         required: true
     },
     photo: {
-        type: String,
+        type: Object,
         required: true
     },
     postedBy: {
         type: ObjectId,
         ref: "User"
     },
-    like:{
-        type:Boolean,
-    },
-    createAt:{
+    like: [
+        { type: ObjectId, ref: "User" }
+    ],
+    comment:[
+        {
+            text:String,
+            postedBy:{
+                type:ObjectId,
+                ref:'User'
+            }
+        }
+    ]
+    ,
+    createAt: {
         type: Date,
         default: Date.now
     }

@@ -20,7 +20,6 @@ const Routing = () => {
   useEffect(()=>{
     const auth = localStorage.getItem('auth')
     if(auth){
-      history.push('/')
     }else{
       history.push('signin')
     }

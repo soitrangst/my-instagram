@@ -1,4 +1,4 @@
-import { SIGNIN,SIGNUP,CREATEPOST,SOCIAL } from "../constants";
+import { SIGNIN,SIGNUP,CREATEPOST,SOCIAL,MYPOSTS } from "../constants";
 
 const checkAuth = (user) => ({
     type: SIGNIN.SIGNIN_LOAD,
@@ -15,9 +15,14 @@ const createPost = (post) =>({
     post
 })
 
-const social = () =>({
+const getSocial = () =>({
     type:SOCIAL.SOCIAL_LOAD,
 })
 
+const myPosts = () =>({
+    type:MYPOSTS.MYPOSTS_LOAD
+})
 
-export { checkAuth,signUp,createPost,social }
+
+
+export { checkAuth,signUp,createPost,getSocial,myPosts }

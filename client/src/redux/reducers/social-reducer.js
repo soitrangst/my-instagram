@@ -1,12 +1,12 @@
 import { SOCIAL } from "../constants"
 
-const initalSignin = {
+const initalSocial = {
     response: [],
     loading: true,
     error:false
 }
 
-export default function (state = initalSignin, action) {
+export default function (state = initalSocial, action) {
     const response = action.response;
     const err = action.error;
     switch (action.type) {

@@ -62,7 +62,6 @@ export default function Signin() {
 
 
         } else if (!response.loading) {
-            console.log(response);
             if (response.error) {
                 M.toast({ html: announcement, classes: "red" })
             }

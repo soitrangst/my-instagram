@@ -20,7 +20,9 @@ exports.upload = (file) => {
                     fs.unlinkSync(file)
                     resolve({
                         url: result.url,
-                        photoId:result.public_id
+                        photoId:result.public_id,
+                        width:result.width,
+                        height:result.height
                     })
                 }
             })

@@ -1,11 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import { useSelector } from 'react-redux'
 import { Link } from "react-router-dom"
 
 const Navbar = () => {
   const state = useSelector(state => state.signinReducer)
+  const [logout,setLogout]= useState(false)
 
-  useEffect(() => { }, [state.loading])
+  useEffect(() => { }, [state.loading,logout])
+
+    const _logOut = () => {
+      localStorage.clear()
+      setLogout(true)
+    }
 
   const renderList = () => {
     if (localStorage.getItem('auth')) {
@@ -13,7 +19,7 @@ const Navbar = () => {
         <Link to="/post"><i className="material-icons large">add</i></Link>,
         <Link to="/profile">Profile</Link>,
         <Link to="/setting">Setting</Link>,
-        <Link to="/">Logout</Link>,
+        <Link to="#" onClick={() => _logOut()}>Logout</Link>,
       ]
     } else {
       return [
@@ -28,7 +34,7 @@ const Navbar = () => {
         <div className="nav-wrapper white">
           <Link to="" className="brand-logo left">instagram</Link>
           <ul id="nav-mobile" className="right ">
-            {renderList().map((element,index)=>{
+            {renderList().map((element, index) => {
               return (<li key={index}>{element}</li>)
             })}
           </ul>

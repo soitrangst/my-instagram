@@ -24,14 +24,40 @@ a {
 }
 
 .gallery {
+    max-width: inherit;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px auto;
+    height: 100%;
 }
 
-.item {
-    margin-bottom: 5%;
-    width: 30%;
+.gallery .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-auto-flow: row dense;
+    grid-gap: 10px;
+    align-self: stretch;
+    width: 100%;
+}
+
+.gallery .grid img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 2px;
+}
+
+.gallery .grid .item {
+    position: relative;
+}
+
+.gallery .grid .item-1 {
+    grid-row: span 1;
+}
+
+.gallery .grid .item-2 {
+    grid-row: span 2;
 }
 
 .material-icons {
@@ -48,6 +74,11 @@ a {
     margin: 26px auto;
 }
 
+.input-button {
+    display: flex;
+    align-items: center;
+}
+
 #toast-container {
     top: 30px !important;
     right: 20px !important;
@@ -59,5 +90,8 @@ a {
         margin-left: 16px;
         margin-right: 16px;
         margin-top: 30px;
+    }
+    .gallery {
+        max-width: 600px;
     }
 }

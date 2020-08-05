@@ -7,6 +7,7 @@ const clould = require("../middleware/cloudDinary")
 const Post = mongoose.model("Post")
 
 router.post('/createpost', requireLoging, multer, async (req, res) => {
+    console.log('checking');
     const { title, body } = req.body
     const photo = req.files[0].path
     let result
@@ -22,7 +23,7 @@ router.post('/createpost', requireLoging, multer, async (req, res) => {
         const post = new Post({
             title,
             body,
-            photo:result.url,
+            photo:result,
             postedBy: req.user
         })
         post.save()
@@ -37,11 +38,12 @@ router.post('/createpost', requireLoging, multer, async (req, res) => {
                 console.log(err);
             })
     }
-
 })
 
 router.get('/posts', (req, res) => {
-    Post.find().limit(10).populate("postedBy", "name _id")
+    Post.find()
+    .populate("postedBy", "name _id")
+    .populate("comment.postedBy", "name _id")
         .then(
             posts => {
                 res.status(200).json({ posts})
@@ -61,6 +63,58 @@ router.get('/mypost', requireLoging, (req, res) => {
         .catch(err => {
             res.status(404).json({error:"Error systerm, data can't be fetch"})
         })
+})
+
+router.put('/like',requireLoging,(req,res)=>{
+
+    console.log(req.body.postID);
+    Post.findByIdAndUpdate(req.body.postID,{
+        $push:{like:req.user._id}
+    },
+        {new:true}
+    ).exec((err,result)=>{
+        console.log('like');
+        if(err){
+            return res.status(422).json({error:"Can't like"})
+        }else{
+            return res.status(200).json(result)
+        }
+    })
+})
+
+router.put('/unlike',requireLoging,(req,res)=>{
+    Post.findByIdAndUpdate(req.body.postID,{
+        $pull:{like:req.user._id}
+    },
+        {new:true}
+    ).exec((err,result)=>{
+        if(err){
+            return res.status(422).json({error:"Can't unlike"})
+        }else{
+            return res.status(200).json(result)
+        }
+    })
+})
+router.put('/comment',requireLoging,(req,res)=>{
+    const comment = {
+        text:req.body.text,
+        postedBy:req.user._id
+    }
+   
+    Post.findByIdAndUpdate(req.body.postID,{
+        $push:{comment:comment}
+    },
+        {new:true}
+    )
+    .populate('comment.postedBy','_id name')
+    .exec((err,result)=>{
+        console.log(err);
+        if(err){
+            return res.status(422).json({error:"Can't comment"})
+        }else{
+            return res.status(200).json(result)
+        }
+    })
 })
 
 module.exports = router

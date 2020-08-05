@@ -62,6 +62,8 @@ export default function CreatePost() {
                     type="text"
                     placeholder="title"
                     value={title}
+                    maxLength='100'
+                    minLength='1'
                     onChange={(e) => setTitle(e.target.value)}
                 />
 
@@ -69,6 +71,8 @@ export default function CreatePost() {
                     type="text"
                     placeholder="body"
                     value={body}
+                    maxLength='300'
+                    minLength='1'
                     onChange={(e) => setBody(e.target.value)}
                 />
 

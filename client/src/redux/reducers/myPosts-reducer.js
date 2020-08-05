@@ -1,18 +1,18 @@
-import { CREATEPOST } from "../constants"
+import {MYPOSTS} from "../constants/index"
 
-const initalCreate = {
-    response: "",
+const initMyposts = {
+    response: [],
     loading: true,
     error:false
 }
 
-export default function (state = initalCreate, action) {
+export default function (state = initMyposts, action) {
     const response = action.response;
     const err = action.error;
     switch (action.type) {
-        case CREATEPOST.CREATEPOST_LOAD_SUCCESS:
+        case MYPOSTS.MYPOSTS_LOAD_SUCCESS:
             return { error:false,loading: false, response };
-        case CREATEPOST.CREATEPOST_LOAD_FAIL:
+        case MYPOSTS.MYPOSTS_LOAD_FAIL:
             return { loading: false,error:true, response:err }
         default:
             return state;

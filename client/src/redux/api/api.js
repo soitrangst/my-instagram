@@ -6,6 +6,9 @@ const api = {
     createPost:`http://${env}/createpost`,
     posts:`http://${env}/posts`,
     myposts:`http://${env}/mypost`,
+    like: `http://${env}/like`,
+    unlike:`http://${env}/unlike`,
+    comment:`http://${env}/comment`
 }
 
 export default api;

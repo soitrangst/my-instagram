@@ -16,10 +16,9 @@ const Signin = async (resquest) => {
             let response = data.error
             throw response
         } else {
-            console.log(data.user);
             localStorage.setItem('auth', true)
             localStorage.setItem('accessToken', data.token)
-            localStorage.setItem("user",JSON.stringify(data.user))
+            localStorage.setItem("user", JSON.stringify(data.user))
             return data.message
         }
     } catch (error) {
@@ -52,10 +51,10 @@ const Signup = async (resquest) => {
 }
 
 const createPost = async (resquest) => {
-    const { post} = resquest
+    const { post } = resquest
     const requestOption = {
         method: 'POST',
-        headers: { 
+        headers: {
             "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
         },
         body: post
@@ -93,12 +92,92 @@ const social = async () => {
     } catch (error) {
         throw error
     }
-
 }
 
+const myposts = async () => {
+    const requestOption = {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+        }
+    }
+    try {
+        const response = await fetch(apiURL.myposts, requestOption)
+        const data = await response.json()
+        if (response.status >= 400) {
+            let response = data.error
+            throw response
+        } else {
+            let response = data.myPosts
+            return response
+        }
+    } catch (error) {
+        throw error
+    }
+}
+
+const like = async (req) => {
+    const {id,dislike} = req
+    let url = dislike ? apiURL.unlike : apiURL.like
+    let body = {
+        postID:id
+    }
+    const requestOption = {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+        body: JSON.stringify(body)
+    }
+    try {
+        const response = await fetch(url, requestOption)
+        const data = await response.json()
+        if (response.status >= 400) {
+            let response = data.error
+            throw response
+        } else {
+            let response = data
+            return response
+        }
+    } catch (error) {
+        throw error
+    }
+}
+
+const commentPut = async (id,text) => {
+    let body = {
+        postID:id,
+        text
+    }
+    const requestOption = {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+        body: JSON.stringify(body)
+    }
+    try {
+        const response = await fetch(apiURL.comment, requestOption)
+        const data = await response.json()
+        if (response.status >= 400) {
+            let response = data.error
+            throw response
+        } else {
+            let response = data
+            return response
+        }
+    } catch (error) {
+        throw error
+    }
+}
 export {
     Signin,
     Signup,
     createPost,
-    social
+    social,
+    myposts,
+    like,
+    commentPut
 }
