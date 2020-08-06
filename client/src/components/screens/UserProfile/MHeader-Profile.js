@@ -2,7 +2,7 @@ import React from 'react'
 import Tab from "./tab"
 
 export default function MHeaderProfile(props) {
-    const { name, _follow, userid, email, post, follower, following } = props
+    const { name, _follow, userid, email, post, follower, following,followerArr } = props
     return (
         <div className="profile-title-M">
 
@@ -14,7 +14,7 @@ export default function MHeaderProfile(props) {
                 />
                 <div className='rowD'>
                     <h4>{name}</h4>
-                    <Tab _follow={_follow} userid={userid} />
+                    <Tab _follow={_follow} userid={userid} followerArr={followerArr} />
                 </div>
             </div>
             <h4 style={{textAlign:'center'}}>{email}</h4>

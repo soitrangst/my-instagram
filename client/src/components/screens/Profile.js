@@ -30,6 +30,7 @@ const Profile = () => {
                     userid={userid}
                     email={myData.user.email}
                     post={myData.post.length}
+                    followerArr={myData.user.follower}
                     follower={myData.user.follower.length}
                     following={myData.user.following.length}
                 />
@@ -38,6 +39,7 @@ const Profile = () => {
                     userid={userid}
                     email={myData.user.email}
                     post={myData.post.length}
+                    followerArr={myData.user.follower}
                     follower={myData.user.follower.length}
                     following={myData.user.following.length}
                 />

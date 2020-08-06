@@ -44,7 +44,7 @@ router.put('/follow', requireLogin, (req, res) => {
             } else {
                 User.findOneAndUpdate(req.user_id, {
                     $push: { following: req.body.userID }
-                }, { new: true })
+                }, { new: true }).select('follower following')
                     .then(announce => { return res.status(200).json({ messages: 'follow successfully',result:announce }) })
                     .catch(err => { return res.status(422).json({ error: err }) })
             }
@@ -67,7 +67,7 @@ router.put('/unfollow', requireLogin, (req, res) => {
                 } else {
                     User.findOneAndUpdate(req.user_id, {
                         $pull: { following: req.body.userID }
-                    }, { new: true })
+                    }, { new: true }).select('follower following')
                         .then(announce => { return res.status(200).json({ messages: 'unfollow successfully',result:announce }) })
                         .catch(err => { return res.status(422).json({ error: err }) })
                 }

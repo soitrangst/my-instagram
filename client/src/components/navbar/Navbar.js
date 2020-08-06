@@ -28,6 +28,24 @@ const Navbar = () => {
       ]
     }
   }
+
+  const renderSearch = () => {
+    if (localStorage.getItem('auth')) {
+      return (
+        <div className="search-input">
+        <form>
+          <div className="input-field " style={{ padding: '10px' }}>
+            <input placeholder="search" style={{ borderBottom: '0.5px ridge ' }} id="search" type="search" required />
+            <label className="label-icon" htmlFor="search"><i className="material-icons black-text">search</i></label>
+            <i className="material-icons">close</i>
+          </div>
+        </form>
+      </div>
+      )
+    } else {
+      return ''
+    }
+  }
   return (
     <div className="navbar-fixed">
       <nav>
@@ -35,15 +53,7 @@ const Navbar = () => {
           <div className='nav-left'>
             <Link to="" className="brand-logo left">instagram</Link>
           </div>
-          <div className="search-input">
-            <form>
-              <div className="input-field " style={{ padding: '10px' }}>
-                <input placeholder="search" style={{ borderBottom: '0.5px ridge ' }} id="search" type="search" required />
-                <label className="label-icon" htmlFor="search"><i className="material-icons black-text">search</i></label>
-                <i className="material-icons">close</i>
-              </div>
-            </form>
-          </div>
+          {renderSearch()}
           <div className="nav-right">
             <ul id="nav-mobile" className="right ">
               {renderList().map((element, index) => {

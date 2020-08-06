@@ -45,7 +45,8 @@ router.get('/posts', (req, res) => {
     .populate("postedBy", "name _id")
     .populate("comment.postedBy", "name _id")
         .then(
-            posts => {
+            results => {
+                const posts = results.reverse()
                 res.status(200).json({ posts})
             }
         )
@@ -57,7 +58,8 @@ router.get('/posts', (req, res) => {
 router.get('/mypost', requireLoging, (req, res) => {
     Post.find({ postedBy: req.user._id })
         .populate('postedBy', '_id name')
-        .then(myPosts => {
+        .then(results => {
+            const myPosts = results.reverse()
             res.status(200).json({ myPosts: myPosts })
         })
         .catch(err => {

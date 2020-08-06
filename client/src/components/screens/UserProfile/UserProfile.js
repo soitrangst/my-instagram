@@ -10,13 +10,13 @@ import M from 'materialize-css'
 
 const UserProfile = () => {
     const [myData, setMyData] = useState(userInterface);
+    const [update, setUpdate] = useState(false)
     const { userid } = useParams()
 
     const getData = async () => {
         try {
             const result = await getUserProfile(userid)
             setMyData(result)
-            console.log(result);
         } catch (error) {
             M.toast({ html: error, classes: 'red' })
         }
@@ -24,14 +24,16 @@ const UserProfile = () => {
 
     useEffect(() => {
         getData()
-    }, [userid])
+    }, [userid,update])
 
     const _follow = async (userid) => {
-        const result = await putFollow({ id: userid, unfollow: false })
-        console.log(userid)
-        console.log(result);
+        try {
+        const result = await putFollow(userid)
+        setUpdate(!update)
+        } catch (error) {
+            M.toast({html:error,classes:"red"})
+        }
     }
-
     return (
         !myData.user._id ? <div></div> :
             <div style={{ maxWidth: "80%", margin: "0px auto" }}>
@@ -42,6 +44,7 @@ const UserProfile = () => {
                     email={myData.user.email}
                     post={myData.post.length}
                     follower={myData.user.follower.length}
+                    followerArr={myData.user.follower}
                     following={myData.user.following.length}
                 />
                 <MHeader
@@ -50,6 +53,7 @@ const UserProfile = () => {
                     userid={userid}
                     email={myData.user.email}
                     post={myData.post.length}
+                    followerArr={myData.user.follower}
                     follower={myData.user.follower.length}
                     following={myData.user.following.length}
                 />

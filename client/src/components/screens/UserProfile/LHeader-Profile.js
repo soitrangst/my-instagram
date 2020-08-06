@@ -1,7 +1,7 @@
 import React from 'react'
 import Tab from "./tab"
 export default function LHeaderProfile(props) {
-    const {name,_follow,userid,email,post,follower,following} = props
+    const {name,_follow,userid,email,post,follower,following,followerArr} = props
     return (
         <div className="profile-title-L">
         <img
@@ -13,7 +13,7 @@ export default function LHeaderProfile(props) {
         <div style={{ width: '50%' }}>
             <div className='rowC'>
             <h4>{name}</h4>
-            <Tab _follow={_follow} userid={userid}/>
+            <Tab _follow={_follow} userid={userid} followerArr={followerArr}/>
             </div>
             <h4>{email}</h4>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
