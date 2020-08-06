@@ -32,7 +32,7 @@ router.get('/user/:id', requireLogin, (req, res) => {
 })
 
 router.put('/follow', requireLogin, (req, res) => {
-    let follow = req.body.followId
+    let follow = req.body.userID
     if(follow){
     User.findByIdAndUpdate(follow,
         { $push: { follower: req.user._id } },
@@ -43,7 +43,7 @@ router.put('/follow', requireLogin, (req, res) => {
                 return res.status(422).json({ error: err })
             } else {
                 User.findOneAndUpdate(req.user_id, {
-                    $push: { following: req.body.followId }
+                    $push: { following: req.body.userID }
                 }, { new: true })
                     .then(announce => { return res.status(200).json({ messages: 'follow successfully',result:announce }) })
                     .catch(err => { return res.status(422).json({ error: err }) })
@@ -55,7 +55,7 @@ router.put('/follow', requireLogin, (req, res) => {
 })
 
 router.put('/unfollow', requireLogin, (req, res) => {
-    let unfollow = req.body.unfollowId
+    let unfollow = req.body.userID
     if(unfollow){
         User.findByIdAndUpdate(unfollow,
             { $pull: { follower: req.user._id } },
@@ -66,7 +66,7 @@ router.put('/unfollow', requireLogin, (req, res) => {
                     return res.status(422).json({ error: err })
                 } else {
                     User.findOneAndUpdate(req.user_id, {
-                        $pull: { following: req.body.unfollowId }
+                        $pull: { following: req.body.userID }
                     }, { new: true })
                         .then(announce => { return res.status(200).json({ messages: 'unfollow successfully',result:announce }) })
                         .catch(err => { return res.status(422).json({ error: err }) })

@@ -10,7 +10,9 @@ const api = {
     unlike:`http://${env}/unlike`,
     comment:`http://${env}/comment`,
     delete: `http://${env}/deletepost/`,
-    userProfile:`http://${env}/user/`
+    userProfile:`http://${env}/user/`,
+    follow:`http://${env}/follow/`,
+    unfollow:`http://${env}/unfollow/`
 }
 
 export default api;

@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { getUserProfile } from '../../redux/api'
-import { userInterface } from "../../redux/constants/user-Interface";
-import LHeader from "./UserProfile/LHeader-Profile"
-import MHeader from "./UserProfile/MHeader-Profile"
+import { useParams } from "react-router-dom";
+import { getUserProfile } from '../../.././redux/api';
+import { userInterface } from "../../.././redux/constants/user-Interface";
+import { putFollow } from '../../.././redux/api';
+import LHeader from "./LHeader-Profile";
+import MHeader from "./MHeader-Profile"
 import M from 'materialize-css'
 
-const Profile = () => {
+
+const UserProfile = () => {
     const [myData, setMyData] = useState(userInterface);
-    const userid = !JSON.parse(localStorage.getItem('user')) ? null : JSON.parse(localStorage.getItem('user'))._id
+    const { userid } = useParams()
 
     const getData = async () => {
         try {
@@ -18,15 +21,23 @@ const Profile = () => {
             M.toast({ html: error, classes: 'red' })
         }
     }
+
     useEffect(() => {
         getData()
     }, [userid])
 
+    const _follow = async (userid) => {
+        const result = await putFollow({ id: userid, unfollow: false })
+        console.log(userid)
+        console.log(result);
+    }
+
     return (
-        !userid ? <div></div> :
+        !myData.user._id ? <div></div> :
             <div style={{ maxWidth: "80%", margin: "0px auto" }}>
                 <LHeader
                     name={myData.user.name}
+                    _follow={_follow}
                     userid={userid}
                     email={myData.user.email}
                     post={myData.post.length}
@@ -35,12 +46,14 @@ const Profile = () => {
                 />
                 <MHeader
                     name={myData.user.name}
+                    _follow={_follow}
                     userid={userid}
                     email={myData.user.email}
                     post={myData.post.length}
                     follower={myData.user.follower.length}
                     following={myData.user.following.length}
                 />
+
                 <div className="gallery">
                     <section className="grid">
                         {myData.post.map((e) => {
@@ -64,4 +77,4 @@ const Profile = () => {
     );
 }
 
-export default Profile;
+export default UserProfile;

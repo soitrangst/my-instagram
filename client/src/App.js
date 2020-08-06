@@ -11,7 +11,7 @@ import Profile from "./components/screens/Profile";
 import Signin from "./components/screens/auth/Signin";
 import Signup from "./components/screens/auth/Signup";
 import CreatePost from "./components/screens/Post/CreatePost";
-import UserProfile from "./components/screens/UserProfile";
+import UserProfile from "./components/screens/UserProfile/UserProfile";
 
 const store = configure()
 

@@ -220,6 +220,35 @@ const getUserProfile = async (id)=>{
         throw error
     }
 }
+
+const putFollow = async (req) => {
+    const {id,unfollow} = req
+    let url = unfollow ? apiURL.unfollow : apiURL.follow
+    let body = {
+        userID:id
+    }
+    const requestOption = {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+        body: JSON.stringify(body)
+    }
+    try {
+        const response = await fetch(url, requestOption)
+        const data = await response.json()
+        if (response.status >= 400) {
+            let response = data.error
+            throw response
+        } else {
+            let response = data
+            return response
+        }
+    } catch (error) {
+        throw error
+    }
+}
 export {
     Signin,
     Signup,
@@ -229,5 +258,6 @@ export {
     like,
     commentPut,
     deletePost,
-    getUserProfile
+    getUserProfile,
+    putFollow
 }
