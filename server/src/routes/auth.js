@@ -4,7 +4,9 @@ const router = express.Router()
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const multer = require('../middleware/multer')
 const requireLogin = require("../middleware/requireLogin")
+const clould = require("../middleware/cloudDinary")
 dotenv.config()
 const User = mongoose.model("User")
 
@@ -13,12 +15,19 @@ router.get('/protected',requireLogin,(req,res)=>{
     res.send("hello ")
 })
 
-router.post('/signup', (req, res) => {
+router.post('/signup',multer, async (req, res) => {
     const saltRounds = 10;
     const salt = bcrypt.genSaltSync(saltRounds)
     const { name, email, password } = req.body
+    const photo = req.files[0].path
     if (!email || !password || !name) {
         return res.status(422).json({ error: "please fill all the fields" })
+    }
+    let result
+    try {
+        result = await clould.upload(photo)
+    } catch (error) {
+        res.status(400).json({ error: " your pic has a problem, please try again " })
     }
     User.findOne({ email: email })
         .then((savedUser) => {
@@ -32,7 +41,8 @@ router.post('/signup', (req, res) => {
                     const user = new User({
                         email,
                         password: hashedPass,
-                        name
+                        name,
+                        photo:result
                     })
 
                     user.save()
@@ -65,9 +75,9 @@ router.post('/signin',(req,res)=>{
         .then(math =>{
             if(math){
                 const token= jwt.sign({_id:user._id},process.env.SECRET_KEY)
-                const {_id,name,email} = user
+                const {_id,name,email,following,follower} = user
                 res.status(200).json({
-                    user:{_id,name,email},
+                    user:{_id,name,email,following,follower},
                     message:"Sign in successfully!!!",
                     token})
             }else{

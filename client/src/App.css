@@ -5,6 +5,7 @@ a {
 
 .brand-logo {
     font-family: 'Grand Hotel', cursive;
+    position: relative;
 }
 
 .mycard {
@@ -13,7 +14,7 @@ a {
 
 .nav-wrapper {
     display: flex;
-    padding: 0 5px;
+    padding: 0 2%;
 }
 
 .rowC {
@@ -79,6 +80,8 @@ a {
 
 .card {
     border-radius: 10px;
+    margin: auto !important;
+    margin-top: 1.5rem !important;
 }
 
 .home-card {
@@ -115,12 +118,6 @@ a {
     border-bottom: 1px solid grey
 }
 
-.profile-title-L .avartar-img {
-    width: 160px;
-    height: auto;
-    border-radius: 50%
-}
-
 .profile-title-M {
     display: none;
 }
@@ -128,6 +125,36 @@ a {
 .rowD {
     display: flex;
     flex-direction: column;
+}
+
+.avartar-profile {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+}
+
+.avartar-profile .avartar-img {
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+}
+
+.hover-avatar:hover .icon-avartar {
+    opacity: 1;
+}
+
+.hover-avatar:hover .avartar-img {
+    opacity: 0.3;
+}
+
+.avartar-profile .icon-avartar {
+    position: absolute;
+    top: 60%;
+    left: 40%;
+    transition: .5s ease;
+    opacity: 0;
 }
 
 @media (max-width: 735px) {
@@ -160,9 +187,15 @@ a {
         margin: 18px 0px;
         border-bottom: 1px solid grey;
     }
+    .avartar-profile {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+    }
     .profile-title-M .avartar-img {
         width: 100px;
-        height: auto;
+        height: 100px;
         border-radius: 50%
     }
 }

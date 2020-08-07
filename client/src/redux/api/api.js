@@ -11,8 +11,10 @@ const api = {
     comment:`http://${env}/comment`,
     delete: `http://${env}/deletepost/`,
     userProfile:`http://${env}/user/`,
-    follow:`http://${env}/follow/`,
-    unfollow:`http://${env}/unfollow/`
+    follow:`http://${env}/follow`,
+    unfollow:`http://${env}/unfollow`,
+    myfollowingPosts:`http://${env}/subposts`,
+    updateAvartar: `http://${env}/updateavartar`,
 }
 
 export default api;

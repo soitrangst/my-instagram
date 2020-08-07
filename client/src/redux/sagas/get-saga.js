@@ -1,7 +1,7 @@
-import {SOCIAL,MYPOSTS} from "../constants";
+import {SOCIAL,MYPOSTS,MYFOLLOWINGPOSTS} from "../constants";
 import {put,call,takeLatest} from "redux-saga/effects";
 
-import {social,myposts} from "../api"
+import {social,myposts,myfollowing} from "../api"
 
 function* handleGetSocial(){
     try {
@@ -21,10 +21,20 @@ function* handleGetMyPosts(){
     }
 }
 
+function* handleGetMyFollowing(){
+    try {
+        const response = yield call(myfollowing)
+        yield put({type:MYFOLLOWINGPOSTS.MYFOLLOWINGPOSTS_LOAD_SUCCESS,response})
+    } catch (error) {
+        yield put({type:MYFOLLOWINGPOSTS.MYFOLLOWINGPOSTS_LOAD_FAIL,error})
+    }
+}
+
 
 function* watchGet (){
     yield takeLatest(SOCIAL.SOCIAL_LOAD,handleGetSocial)
     yield takeLatest(MYPOSTS.MYPOSTS_LOAD,handleGetMyPosts)
+    yield takeLatest(MYFOLLOWINGPOSTS.MYFOLLOWINGPOSTS_LOAD,handleGetMyFollowing)
 }
 
 

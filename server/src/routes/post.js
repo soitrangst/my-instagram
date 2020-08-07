@@ -7,7 +7,6 @@ const clould = require("../middleware/cloudDinary")
 const Post = mongoose.model("Post")
 
 router.post('/createpost', requireLoging, multer, async (req, res) => {
-    console.log('checking');
     const { title, body } = req.body
     const photo = req.files[0].path
     let result
@@ -28,7 +27,6 @@ router.post('/createpost', requireLoging, multer, async (req, res) => {
         })
         post.save()
             .then(responses => {
-                console.log("post success");
                 res.status(200).json({
                     post: responses,
                     message: "upload successfully"
@@ -42,6 +40,21 @@ router.post('/createpost', requireLoging, multer, async (req, res) => {
 
 router.get('/posts', (req, res) => {
     Post.find()
+    .populate("postedBy", "name _id")
+    .populate("comment.postedBy", "name _id")
+        .then(
+            results => {
+                const posts = results.reverse()
+                res.status(200).json({ posts})
+            }
+        )
+        .catch(err => {
+            res.status(404).json({error:"Error systerm, data can't be fetch"})
+        })
+})
+
+router.get('/subposts',requireLoging, (req, res) => {
+    Post.find({postedBy:{$in:req.user.following}})
     .populate("postedBy", "name _id")
     .populate("comment.postedBy", "name _id")
         .then(
@@ -69,13 +82,11 @@ router.get('/mypost', requireLoging, (req, res) => {
 
 router.put('/like',requireLoging,(req,res)=>{
 
-    console.log(req.body.postID);
     Post.findByIdAndUpdate(req.body.postID,{
         $push:{like:req.user._id}
     },
         {new:true}
     ).exec((err,result)=>{
-        console.log('like');
         if(err){
             return res.status(422).json({error:"Can't like"})
         }else{
@@ -110,7 +121,6 @@ router.put('/comment',requireLoging,(req,res)=>{
     )
     .populate('comment.postedBy','_id name')
     .exec((err,result)=>{
-        console.log(err);
         if(err){
             return res.status(422).json({error:"Can't comment"})
         }else{

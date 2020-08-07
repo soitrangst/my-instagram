@@ -8,12 +8,11 @@ import M from 'materialize-css'
 const Profile = () => {
     const [myData, setMyData] = useState(userInterface);
     const userid = !JSON.parse(localStorage.getItem('user')) ? null : JSON.parse(localStorage.getItem('user'))._id
-
     const getData = async () => {
         try {
             const result = await getUserProfile(userid)
             setMyData(result)
-            console.log(result);
+            
         } catch (error) {
             M.toast({ html: error, classes: 'red' })
         }
@@ -23,25 +22,13 @@ const Profile = () => {
     }, [userid])
 
     return (
-        !userid ? <div></div> :
+        ( !myData.user._id) ? <div></div> :
             <div style={{ maxWidth: "80%", margin: "0px auto" }}>
                 <LHeader
-                    name={myData.user.name}
-                    userid={userid}
-                    email={myData.user.email}
-                    post={myData.post.length}
-                    followerArr={myData.user.follower}
-                    follower={myData.user.follower.length}
-                    following={myData.user.following.length}
+                myData={myData}
                 />
                 <MHeader
-                    name={myData.user.name}
-                    userid={userid}
-                    email={myData.user.email}
-                    post={myData.post.length}
-                    followerArr={myData.user.follower}
-                    follower={myData.user.follower.length}
-                    following={myData.user.following.length}
+                myData={myData}
                 />
                 <div className="gallery">
                     <section className="grid">

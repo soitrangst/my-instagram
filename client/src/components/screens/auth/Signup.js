@@ -15,6 +15,7 @@ export default function Signup() {
     const [email, setEmail] = useState({ text: "admin@gmail.com", invalid: false })
     const [password, setPassword] = useState({ text: "Long@2010", invalid: false })
     const [repassword, setReassword] = useState({ text: "Long@2010", invalid: false })
+    const [image, setImage] = useState()
     const [warning, setWarning] = useState({ invalid: false, content: "" })
 
     const refreshForm = () => {
@@ -23,6 +24,7 @@ export default function Signup() {
         setPassword({ text: "", invalid: false })
         setReassword({ text: "", invalid: false })
         setWarning({ content: "", invalid: false })
+        setImage()
     }
     useEffect(() => {
         if (!response.loading) {
@@ -30,13 +32,13 @@ export default function Signup() {
                 M.toast({ html: annoucement, classes: "red" })
             } else {
                 M.toast({
-                    html:annoucement,
-                    classes:"light-green darken-3",
-                    completeCallback:MoveSignin,
-                    inDuration:100,
-                    outDuration:10
+                    html: annoucement,
+                    classes: "light-green darken-3",
+                    completeCallback: MoveSignin,
+                    inDuration: 100,
+                    outDuration: 10
                 })
-                function MoveSignin () {
+                function MoveSignin() {
                     let { from } = location.state || { from: { pathname: "/signin" } };
                     history.replace(from)
                 }
@@ -63,7 +65,7 @@ export default function Signup() {
         if (!name.text & !email.text & !password.text & !repassword.text) {
             M.toast({
                 html: "Please fill all the fields",
-                classes:"red",
+                classes: "red",
             })
             refreshForm()
         }
@@ -80,11 +82,12 @@ export default function Signup() {
             else if (password.text !== repassword.text) {
                 setWarning({ invalid: true, content: "your two password weren't match" })
             } else {
-                let user = {
-                    name: name.text,
-                    email: email.text,
-                    password: password.text
-                }
+                const user = new FormData()
+                user.append('name',name.text)
+                user.append('email',email.text)
+                user.append('password',password.text)
+                user.append('image',image)
+                
                 dispatch(signUp(user))
                 refreshForm()
             }
@@ -124,6 +127,18 @@ export default function Signup() {
                         onChange={(e) => setReassword({ invalid: false, text: e.target.value })}
                     />
                     {repassword.invalid ? <span className="red-text text-accent-4"><h6>Input Password and Submit 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter</h6></span> : ""}
+                    <div className="file-field input-field">
+                        <div className="btn">
+                            <span>your avartar</span>
+                            <input
+                                type="file"
+                                onChange={(e) => setImage(e.target.files[0])}
+                            />
+                        </div>
+                        <div className="file-path-wrapper">
+                            <input className="file-path validate" type="text" />
+                        </div>
+                    </div>
                     <button
                         className="btn waves-effect  red" type="submit">
                         Sign Up

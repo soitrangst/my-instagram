@@ -12,6 +12,7 @@ import Signin from "./components/screens/auth/Signin";
 import Signup from "./components/screens/auth/Signup";
 import CreatePost from "./components/screens/Post/CreatePost";
 import UserProfile from "./components/screens/UserProfile/UserProfile";
+import MyFollowing from "./components/screens/MyFollowing";
 
 const store = configure()
 
@@ -34,6 +35,7 @@ const Routing = () => {
       <Route path="/signup" component={Signup} />
       <Route path="/post" component={CreatePost} />
       <Route path="/profile/:userid" component={UserProfile} />
+      <Route path="/myfollowing" component={MyFollowing} />
       <Route path="**" />
     </Switch>
   )

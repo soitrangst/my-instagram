@@ -31,8 +31,7 @@ const Signup = async (resquest) => {
     const { user } = resquest
     const requestOption = {
         method: 'POST',
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(user)
+        body: user
     }
 
     try {
@@ -117,10 +116,10 @@ const myposts = async () => {
 }
 
 const like = async (req) => {
-    const {id,dislike} = req
+    const { id, dislike } = req
     let url = dislike ? apiURL.unlike : apiURL.like
     let body = {
-        postID:id
+        postID: id
     }
     const requestOption = {
         method: 'PUT',
@@ -145,9 +144,9 @@ const like = async (req) => {
     }
 }
 
-const commentPut = async (id,text) => {
+const commentPut = async (id, text) => {
     let body = {
-        postID:id,
+        postID: id,
         text
     }
     const requestOption = {
@@ -173,7 +172,7 @@ const commentPut = async (id,text) => {
     }
 }
 
-const deletePost = async (id)=>{
+const deletePost = async (id) => {
 
     const requestOption = {
         method: 'DELETE',
@@ -183,7 +182,7 @@ const deletePost = async (id)=>{
         },
     }
     try {
-        const response = await fetch(apiURL.delete+id, requestOption)
+        const response = await fetch(apiURL.delete + id, requestOption)
         const data = await response.json()
         if (response.status >= 400) {
             let response = data.error
@@ -197,7 +196,7 @@ const deletePost = async (id)=>{
     }
 }
 
-const getUserProfile = async (id)=>{
+const getUserProfile = async (id) => {
 
     const requestOption = {
         method: 'GET',
@@ -207,7 +206,7 @@ const getUserProfile = async (id)=>{
         },
     }
     try {
-        const response = await fetch(apiURL.userProfile+id, requestOption)
+        const response = await fetch(apiURL.userProfile + id, requestOption)
         const data = await response.json()
         if (response.status >= 400) {
             let response = data.error
@@ -222,10 +221,11 @@ const getUserProfile = async (id)=>{
 }
 
 const putFollow = async (req) => {
-    const {id,unfollow} = req
+    const { passFollower } = req
+    const { id, unfollow } = passFollower
     let url = unfollow ? apiURL.unfollow : apiURL.follow
     let body = {
-        userID:id
+        userID: id
     }
     const requestOption = {
         method: 'PUT',
@@ -249,6 +249,53 @@ const putFollow = async (req) => {
         throw error
     }
 }
+
+const myfollowing = async () => {
+    const requestOption = {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+        }
+    }
+    try {
+        const response = await fetch(apiURL.myfollowingPosts, requestOption)
+        const data = await response.json()
+        if (response.status >= 400) {
+            let response = data.error
+            throw response
+        } else {
+            let response = data.posts
+            return response
+        }
+    } catch (error) {
+        throw error
+    }
+}
+
+const putAvartar = async (photo) => {
+    
+    const requestOption = {
+        method: 'PUT',
+        headers: {
+            "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+        body: photo
+    }
+    try {
+        const response = await fetch(apiURL.updateAvartar, requestOption)
+        const data = await response.json()
+        if (response.status >= 400) {
+            let response = data.error
+            throw response
+        } else {
+            let response = data
+            return response
+        }
+    } catch (error) {
+        throw error
+    }
+}
+
 export {
     Signin,
     Signup,
@@ -259,5 +306,7 @@ export {
     commentPut,
     deletePost,
     getUserProfile,
-    putFollow
+    putFollow,
+    myfollowing,
+    putAvartar
 }

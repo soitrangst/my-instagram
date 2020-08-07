@@ -18,7 +18,7 @@ const Navbar = () => {
       return [
         <Link to="/post"><i className="material-icons large">add</i></Link>,
         <Link to="/profile">Profile</Link>,
-        <Link to="/setting">Setting</Link>,
+        <Link to="/myfollowing">My Following</Link>,
         <Link to="#" onClick={() => _logOut()}>Logout</Link>,
       ]
     } else {
