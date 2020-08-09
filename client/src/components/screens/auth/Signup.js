@@ -62,7 +62,8 @@ export default function Signup() {
 
     const _post = (e) => {
         e.preventDefault()
-        if (!name.text & !email.text & !password.text & !repassword.text) {
+        console.log(image);
+        if (!name.text && !email.text && !password.text && !repassword.text && !image) {
             M.toast({
                 html: "Please fill all the fields",
                 classes: "red",

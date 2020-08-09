@@ -23,7 +23,7 @@ const Routing = () => {
     const auth = localStorage.getItem('auth')
     if(auth){
     }else{
-      history.push('signin')
+      history.push('/signin')
     }
   },[state.loading])
 

@@ -19,17 +19,15 @@ router.post('/signup',multer, async (req, res) => {
     const saltRounds = 10;
     const salt = bcrypt.genSaltSync(saltRounds)
     const { name, email, password } = req.body
-    const photo = req.files[0].path
+    
     if (!email || !password || !name) {
         return res.status(422).json({ error: "please fill all the fields" })
     }
-    let result
     try {
+        const photo = req.files[0].path
+        let result
         result = await clould.upload(photo)
-    } catch (error) {
-        res.status(400).json({ error: " your pic has a problem, please try again " })
-    }
-    User.findOne({ email: email })
+        User.findOne({ email: email })
         .then((savedUser) => {
             if (savedUser) {
                 return res.status(422).json({ error: "Your email was registered" })
@@ -56,8 +54,11 @@ router.post('/signup',multer, async (req, res) => {
 
         })
         .catch(err => {
-            console.log(err);
+            throw err
         })
+    } catch (error) {
+        res.status(400).json({ error: " your pic has a problem, please try again " })
+    }
 
 })
 

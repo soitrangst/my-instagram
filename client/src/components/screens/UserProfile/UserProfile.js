@@ -29,10 +29,10 @@ const UserProfile = () => {
                 userid={userid}
                 myData={myData}
                 />
-                <MHeader
+                {/* <MHeader
                 userid={userid}
                 myData={myData}
-                />
+                /> */}
 
                 <div className="gallery">
                     <section className="grid">

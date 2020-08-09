@@ -42,6 +42,7 @@ router.get('/posts', (req, res) => {
     Post.find()
     .populate("postedBy", "name _id")
     .populate("comment.postedBy", "name _id")
+    .sort('createAt')
         .then(
             results => {
                 const posts = results.reverse()
@@ -57,9 +58,10 @@ router.get('/subposts',requireLoging, (req, res) => {
     Post.find({postedBy:{$in:req.user.following}})
     .populate("postedBy", "name _id")
     .populate("comment.postedBy", "name _id")
+    .sort('createAt')
         .then(
             results => {
-                const posts = results.reverse()
+                const posts = results
                 res.status(200).json({ posts})
             }
         )
@@ -71,8 +73,9 @@ router.get('/subposts',requireLoging, (req, res) => {
 router.get('/mypost', requireLoging, (req, res) => {
     Post.find({ postedBy: req.user._id })
         .populate('postedBy', '_id name')
+        .sort('createAt')
         .then(results => {
-            const myPosts = results.reverse()
+            const myPosts = results
             res.status(200).json({ myPosts: myPosts })
         })
         .catch(err => {

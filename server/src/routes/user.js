@@ -79,9 +79,7 @@ router.put('/unfollow', requireLogin, (req, res) => {
 })
 
 router.put('/updateavartar', requireLogin, multer, async (req, res) => {
-    console.log("AAA");
     try {
-        console.log("BBB");
         const photo = req.files[0].path
         let result
         result = await clould.upload(photo)

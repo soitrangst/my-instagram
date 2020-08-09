@@ -10,6 +10,8 @@ import ModalImage from "./common/Modal-Image"
 export default function LHeaderProfile(props) {
     const { userid, myData } = props
     let photoUrl = myData.user.photo ? myData.user.photo.url : null
+    let ownerID = !JSON.parse(localStorage.getItem('user')) ? null : JSON.parse(localStorage.getItem('user'))._id
+
     const [photo, setPhoto] = useState(photoUrl)
     const [data, setData] = useState({
         name: myData.user.name,
@@ -61,7 +63,7 @@ export default function LHeaderProfile(props) {
     return (
         <div className="profile-title-L">
             <ModalImage updateAvartar={updateAvartar} />
-            <Avatar photo={photo} userid={userid} />
+            <Avatar photo={photo} userid={userid} ownerID={ownerID} />
             <div style={{ width: '50%' }}>
                 <div className='rowC'>
                     <h4>{name}</h4>
